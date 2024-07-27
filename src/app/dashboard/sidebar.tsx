@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
+import Button from "../components/Button";
 
 // Data for the sidebar
 const data = [
@@ -64,15 +66,18 @@ const Sidebar = () => {
               )
             )}
           </div>
-          <button className="bg-[#F4F4F4] text-[#797979] text-base font-inter rounded flex items-center justify-start p-2">
+          <Link
+            href={"/signin"}
+            className="bg-[#F4F4F4] text-[#797979] text-base font-inter rounded flex items-center justify-start p-2"
+          >
             Logout
-          </button>
+          </Link>
         </div>
       </div>
 
       {/* Boards */}
       <div className="w-full h-full">
-        <div className="flex flex-col gap-2 justify-center items-start w-full">
+        <div className="mb-4 flex flex-col gap-2 justify-center items-start w-full">
           {data.map((item: any, index: number) => (
             <div
               onClick={() => setSelectedTab(item.name)}
@@ -97,21 +102,11 @@ const Sidebar = () => {
         </div>
 
         {/* Create new Task Button */}
-        <div className="mt-4  rounded-lg p-[1.5px] bg-gradient-to-t from-[#4B36CC] to-[#9C93D4]">
-          <button className="text-[20px] bg-gradient-to-b from-[#4C38C2] to-[#2F2188] rounded-lg shadow-md font-medium font-inter text-white p-2 flex items-center justify-center gap-2 w-full   ">
-            Create new task
-            <Image
-              src="/assets/sidebar/plus.svg"
-              alt="Plus"
-              width={24}
-              height={24}
-            />
-          </button>
-        </div>
+        <Button text="Create new task" />
       </div>
 
       {/* Download the app */}
-      <div className="flex gap-2 p-2 mt-auto bg-[#F3F3F3] rounded-lg">
+      <div className="flex gap-2 p-2 mt-auto bg-[#F3F3F3] rounded-lg cursor-pointer">
         <Image
           src="/assets/sidebar/download.svg"
           alt="Download"
