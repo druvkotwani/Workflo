@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Button from "../components/Button";
+import Workspace from "./workspace";
 const features = [
   {
     heading: "Introducing tags",
@@ -43,7 +44,7 @@ const Dashboard = () => {
   const [infoHover, setInfoHover] = useState(false);
   const [headerTab, setHeaderTab] = useState("");
   return (
-    <div className="py-6 mx-4 w-full">
+    <div className="py-6 mx-4 w-full ">
       {/* Header */}
       <div className="flex flex-col gap-4 ">
         <div className="flex items-center justify-between w-full">
@@ -144,7 +145,7 @@ const Dashboard = () => {
       </div>
 
       {/* Lists */}
-      <div></div>
+      <Workspace />
     </div>
   );
 };

@@ -32,7 +32,7 @@ const data = [
 const Sidebar = () => {
   const [selectedTab, setSelectedTab] = useState("Home");
   return (
-    <div className="w-fit min-h-screen py-6 px-4 bg-white lg:min-w-[285px] flex flex-col gap-4">
+    <div className="w-fit min-h-screen  py-6 px-4 bg-white lg:min-w-[285px] flex flex-col gap-4 border-r border-r-[#DEDEDE]">
       {/* Profile + Additional Settings + Logout */}
       <div className="flex flex-col  gap-2">
         {/* Profile section */}

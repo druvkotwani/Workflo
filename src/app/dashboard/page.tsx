@@ -4,7 +4,7 @@ import Dashboard from "./dashboard";
 
 const Page = () => {
   return (
-    <div className="bg-[#F7F7F7] min-h-screen flex">
+    <div className="bg-[#F7F7F7]  flex ">
       <Sidebar />
       <Dashboard />
     </div>
