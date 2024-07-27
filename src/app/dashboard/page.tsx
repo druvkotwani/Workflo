@@ -4,9 +4,12 @@ import Dashboard from "./dashboard";
 
 const Page = () => {
   return (
-    <div className="bg-[#F7F7F7]  flex ">
+    <div className="bg-[#F7F7F7]  flex h-screen">
       <Sidebar />
-      <Dashboard />
+      <div className=" ml-[301px] mr-4">
+        {" "}
+        <Dashboard />
+      </div>
     </div>
   );
 };

@@ -31,6 +31,22 @@ const tempData = [
     where: "In progress",
   },
   {
+    heading: "Conduct User Feedback Survey",
+    description: "Collect and analyze user feedback to improve app features.",
+    priority: "Low",
+    date: "2024-08-05",
+    time: "3hr ago",
+    where: "In progress",
+  },
+  {
+    heading: "Conduct User Feedback Survey",
+    description: "Collect and analyze user feedback to improve app features.",
+    priority: "Low",
+    date: "2024-08-05",
+    time: "3hr ago",
+    where: "In progress",
+  },
+  {
     heading: "Integrate Cloud Storage",
     description: "Enable cloud storage for note backup and synchronization.",
     priority: "Urgent",
@@ -53,9 +69,12 @@ const columns = ["To do", "In progress", "Under review", "Finished"];
 
 const Workspace = () => {
   return (
-    <div className="mt-4 p-4  bg-white rounded-lg">
+    <div
+      className="mt-4 p-4 bg-white rounded-lg overflow-y-auto"
+      style={{ maxHeight: "59vh" }}
+    >
       <div className="grid grid-cols-4 gap-4 mb-4">
-        {columns.map((item: any, index: number) => (
+        {columns.map((item, index) => (
           <div key={index} className="flex justify-between">
             <p className="text-[#555555] text-[20px]">{item}</p>
             <Image
