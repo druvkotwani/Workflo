@@ -1,87 +1,12 @@
 "use client";
 import Image from "next/image";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button2 from "../components/Button2";
 import List from "../components/List";
 import { v4 as uuidv4 } from "uuid";
 import dynamic from "next/dynamic";
 import { ListProps } from "../components/List";
-import { ModalContext } from "../context/modalContext";
-
-const tempData = [
-  {
-    id: uuidv4(),
-    heading: "Implement User Authentication",
-    description:
-      "Develop and integrate user authentication using email and password.",
-    priority: "Urgent",
-    date: "2024-08-15",
-    time: "1hr ago",
-    where: "To do",
-  },
-  {
-    id: uuidv4(),
-
-    heading: "Design Home Page UI",
-    description:
-      "Develop and integrate user authentication using email and password.",
-    priority: "Medium",
-    date: "2024-08-15",
-    time: "1hr ago",
-    where: "In progress",
-  },
-  {
-    id: uuidv4(),
-
-    heading: "Conduct User Feedback Survey",
-    description: "Collect and analyze user feedback to improve app features.",
-    priority: "Low",
-    date: "2024-08-05",
-    time: "3hr ago",
-    where: "In progress",
-  },
-  {
-    id: uuidv4(),
-
-    heading: "Conduct User Feedback Survey",
-    description: "Collect and analyze user feedback to improve app features.",
-    priority: "Low",
-    date: "2024-08-05",
-    time: "3hr ago",
-    where: "In progress",
-  },
-  {
-    id: uuidv4(),
-
-    heading: "Conduct User Feedback Survey",
-    description: "Collect and analyze user feedback to improve app features.",
-    priority: "Low",
-    date: "2024-08-05",
-    time: "3hr ago",
-    where: "In progress",
-  },
-  {
-    id: uuidv4(),
-
-    heading: "Integrate Cloud Storage",
-    description: "Enable cloud storage for note backup and synchronization.",
-    priority: "Urgent",
-    date: "2024-08-20",
-    time: "2 days ago",
-    where: "Under review",
-  },
-  {
-    id: uuidv4(),
-
-    heading: "Test Cross-browser Compatibility",
-    description:
-      "Ensure the app works seamlessly across different web browsers.",
-    priority: "Medium",
-    date: "2024-07-30",
-    time: "4 days ago",
-    where: "Finished",
-  },
-];
+import { ModalContext, Task } from "../context/modalContext";
 
 const col = ["To do", "In progress", "Under review", "Finished"];
 
@@ -103,13 +28,23 @@ const Draggable = dynamic(
 );
 
 const Workspace = () => {
-  const { setShowModal, setStatus } = useContext(ModalContext);
+  const { setShowModal, setStatus, data, setSelectedTask } =
+    useContext(ModalContext);
   const [columns, setColumns] = useState<ColumnsState>({
-    "To do": tempData.filter((item) => item.where === "To do"),
-    "In progress": tempData.filter((item) => item.where === "In progress"),
-    "Under review": tempData.filter((item) => item.where === "Under review"),
-    Finished: tempData.filter((item) => item.where === "Finished"),
+    "To do": [],
+    "In progress": [],
+    "Under review": [],
+    Finished: [],
   });
+
+  useEffect(() => {
+    setColumns({
+      "To do": data.filter((item) => item.where === "To do"),
+      "In progress": data.filter((item) => item.where === "In progress"),
+      "Under review": data.filter((item) => item.where === "Under review"),
+      Finished: data.filter((item) => item.where === "Finished"),
+    });
+  }, [data]);
 
   const onDragEnd = (result: any) => {
     const { source, destination } = result;
@@ -170,7 +105,14 @@ const Workspace = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <List {...item} />
+                          <List
+                            {...item}
+                            onClick={() => (
+                              setSelectedTask(item as Task),
+                              setStatus(columnName),
+                              setShowModal(true)
+                            )}
+                          />
                         </div>
                       )}
                     </Draggable>

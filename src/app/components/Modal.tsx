@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../context/modalContext";
 import styles from "./Modal.module.css";
+import { v4 as uuidv4 } from "uuid";
 
-const data = [
+const tempData = [
   {
     name: "Status",
     icon: "status.svg",
@@ -25,7 +26,57 @@ const data = [
 ];
 
 const Modal = () => {
-  const { setShowModal, status, setStatus } = useContext(ModalContext);
+  const {
+    setShowModal,
+    status,
+    setStatus,
+    setData,
+    data,
+    selectedTask,
+    setSelectedTask,
+  } = useContext(ModalContext);
+  const [title, setTitle] = useState(selectedTask?.heading || "");
+
+  const [priority, setPriorityLocal] = useState("Not Selected");
+  const [deadline, setDeadlineLocal] = useState("");
+  const [description, setDescriptionLocal] = useState("");
+  const [mainDescription, setMainDescription] = useState("");
+
+  useEffect(() => {
+    if (selectedTask) {
+      setTitle(selectedTask.heading);
+      setPriorityLocal(selectedTask.priority);
+      setDeadlineLocal(selectedTask.date);
+      setDescriptionLocal(selectedTask.description);
+    }
+  }, [selectedTask]);
+
+  const handleSubmit = () => {
+    const updatedTask = {
+      id: selectedTask ? selectedTask.id : uuidv4(),
+      heading: title,
+      description,
+      priority,
+      date: deadline,
+      time: new Date().toLocaleTimeString(),
+      where: status,
+    };
+
+    if (selectedTask) {
+      // Update existing task
+      setData((prev: any) =>
+        prev.map((task: any) =>
+          task.id === updatedTask.id ? updatedTask : task
+        )
+      );
+    } else {
+      // Add new task
+      setData((prev: any) => [updatedTask, ...prev]);
+    }
+
+    setShowModal(false);
+    setSelectedTask(null);
+  };
   return (
     <div
       data-aos="fade-left"
@@ -43,7 +94,7 @@ const Modal = () => {
               alt="Close"
               width={24}
               height={24}
-              onClick={() => setShowModal(false)}
+              onClick={() => (setShowModal(false), setSelectedTask(null))}
               className="cursor-pointer"
             />
             <Image
@@ -55,6 +106,18 @@ const Modal = () => {
             />
           </div>
           <div className="flex items-center gap-4">
+            <div
+              onClick={handleSubmit}
+              className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]"
+            >
+              Save
+              <Image
+                src="/assets/dashboard/modal/save.svg"
+                alt="Save"
+                width={24}
+                height={24}
+              />
+            </div>
             <div className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]">
               Share
               <Image
@@ -81,13 +144,15 @@ const Modal = () => {
           <div className="flex flex-col gap-8 items-start justify-center">
             <input
               type="text"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
               placeholder="Title"
               className={`text-5xl font-barlow font-semibold focus:outline-none ${styles["input-placeholder"]} ${styles["input-text"]}`}
             />
 
             <div className="flex gap-[60px] w-full">
               <div className="flex flex-col gap-8">
-                {data.map((item: any, index: number) => (
+                {tempData.map((item: any, index: number) => (
                   <div key={index} className="flex gap-6">
                     <Image
                       src={`/assets/dashboard/modal/${item.icon}`}
@@ -126,29 +191,35 @@ const Modal = () => {
                 </select>
 
                 <select
+                  value={priority}
+                  onChange={(e) => setPriorityLocal(e.target.value)}
                   className={`max-w-[150px] text-base font-inter rounded focus:outline-none ${styles.customSelect}`}
                 >
                   <option
                     className="text-[#C1BDBD] font-inter text-base"
-                    value=""
+                    value="Not Selected"
                     disabled
                     selected
                     hidden
                   >
                     Not Selected
                   </option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Urgent">Urgent</option>
                 </select>
 
                 <input
+                  value={deadline}
+                  onChange={(e) => setDeadlineLocal(e.target.value)}
                   type="date"
                   className={`w-full max-w-[150px] text-base font-inter rounded focus:outline-none  ${styles.customSelect}`}
                 />
 
                 <input
                   placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescriptionLocal(e.target.value)}
                   className={`text-base  font-inter  rounded focus:outline-none ${styles["input-placeholder"]}  ${styles["input-text-2"]}`}
                 />
               </div>
@@ -174,6 +245,8 @@ const Modal = () => {
       {/* Start writing, or drag your own files here. */}
 
       <input
+        value={mainDescription}
+        onChange={(e) => setMainDescription(e.target.value)}
         type="text"
         placeholder="Start writing, or drag your own files here."
         className={`text-base font-inter  focus:outline-none ${styles["input-placeholder"]} ${styles["input-text-2"]}`}

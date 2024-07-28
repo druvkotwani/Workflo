@@ -13,6 +13,7 @@ export interface ListProps {
   index?: number;
   draggableProps?: any;
   dragHandleProps?: any;
+  onClick?: () => void;
 }
 
 function checkPriority(priority: string) {
@@ -47,11 +48,13 @@ const List: React.FC<ListProps> = ({
   index,
   draggableProps,
   dragHandleProps,
+  onClick = () => {},
 }) => {
   return (
     <div
       {...draggableProps}
       {...dragHandleProps}
+      onClick={onClick}
       className={` py-[14px] px-[13px] rounded-lg bg-[#F9F9F9] border border-[#DEDEDE] `}
     >
       <div className="flex flex-col gap-[13px]">
