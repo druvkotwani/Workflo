@@ -1,14 +1,18 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 
-interface ButtonProps {
+export interface ListProps {
+  id: string;
   heading?: string;
   description?: string;
   priority?: string;
   date?: string;
   time?: string;
-  where?: string;
   index?: number;
+  draggableProps?: any;
+  dragHandleProps?: any;
 }
 
 function checkPriority(priority: string) {
@@ -33,20 +37,22 @@ function checkWhere(where: string) {
   }
 }
 
-const List: React.FC<ButtonProps> = ({
+const List: React.FC<ListProps> = ({
+  id,
   heading,
   description,
   priority = "bg-[#0ECC5A]",
   date,
   time,
   index,
-  where = "col-start-1 col-end-2",
+  draggableProps,
+  dragHandleProps,
 }) => {
   return (
     <div
-      className={` py-[14px] px-[13px] rounded-lg bg-[#F9F9F9] border border-[#DEDEDE]  ${checkWhere(
-        where
-      )}`}
+      {...draggableProps}
+      {...dragHandleProps}
+      className={` py-[14px] px-[13px] rounded-lg bg-[#F9F9F9] border border-[#DEDEDE] `}
     >
       <div className="flex flex-col gap-[13px]">
         <div className="flex gap-1 flex-col">

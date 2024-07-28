@@ -44,7 +44,7 @@ const Dashboard = () => {
   const [infoHover, setInfoHover] = useState(false);
   const [headerTab, setHeaderTab] = useState("");
   return (
-    <div className="py-6  w-full  ">
+    <div className="pt-6  w-full  ">
       {/* Header */}
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between w-full">
