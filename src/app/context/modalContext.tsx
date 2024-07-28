@@ -66,6 +66,7 @@ export const ModalContext = createContext({
   setData: (value: any) => {},
   selectedTask: null as Task | null,
   setSelectedTask: (value: Task | null) => {},
+  deleteTask: (id: string) => {},
 });
 
 export const ModalProvider = ({ children }: any) => {
@@ -74,6 +75,10 @@ export const ModalProvider = ({ children }: any) => {
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState("Not Selected");
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
+  const deleteTask = (id: string) => {
+    setData((prev: any) => prev.filter((task: any) => task.id !== id));
+  };
 
   return (
     <ModalContext.Provider
@@ -88,6 +93,7 @@ export const ModalProvider = ({ children }: any) => {
         setData,
         selectedTask,
         setSelectedTask,
+        deleteTask,
       }}
     >
       {children}
