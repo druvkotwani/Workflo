@@ -3,6 +3,26 @@
 import Image from "next/image";
 import React, { useContext } from "react";
 import { ModalContext } from "../context/modalContext";
+import styles from "./Modal.module.css";
+
+const data = [
+  {
+    name: "Status",
+    icon: "status.svg",
+  },
+  {
+    name: "Priority",
+    icon: "priority.svg",
+  },
+  {
+    name: "Deadline",
+    icon: "date.svg",
+  },
+  {
+    name: "Description",
+    icon: "edit.svg",
+  },
+];
 
 const Modal = () => {
   const { setShowModal } = useContext(ModalContext);
@@ -49,12 +69,106 @@ const Modal = () => {
             </div>
           </div>
         </div>
-        <div></div>
+
+        {/* Data */}
+        <div className="flex flex-col gap-[38px]">
+          <div className="flex flex-col gap-8 items-start justify-center">
+            <input
+              type="text"
+              placeholder="Title"
+              className={`text-5xl font-barlow font-semibold focus:outline-none ${styles["input-placeholder"]} ${styles["input-text"]}`}
+            />
+
+            <div className="flex gap-[60px] w-full">
+              <div className="flex flex-col gap-8">
+                {data.map((item: any, index: number) => (
+                  <div key={index} className="flex gap-6">
+                    <Image
+                      src={`/assets/dashboard/modal/${item.icon}`}
+                      alt={item.name}
+                      width={24}
+                      height={24}
+                    />
+                    <span className="font-inter text-base text-[#666666]">
+                      {item.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col gap-8 w-full ">
+                <select
+                  className={`max-w-[150px] text-base font-inter rounded focus:outline-none ${styles.customSelect}`}
+                >
+                  <option
+                    className="text-[#C1BDBD] font-inter text-base"
+                    value=""
+                    disabled
+                    selected
+                    hidden
+                  >
+                    Not Selected
+                  </option>
+                  <option value="to-do">To do</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="under-review">Under review</option>
+                  <option value="finished">Finished</option>
+                </select>
+
+                <select
+                  className={`max-w-[150px] text-base font-inter rounded focus:outline-none ${styles.customSelect}`}
+                >
+                  <option
+                    className="text-[#C1BDBD] font-inter text-base"
+                    value=""
+                    disabled
+                    selected
+                    hidden
+                  >
+                    Not Selected
+                  </option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+
+                <input
+                  type="date"
+                  className={`w-full max-w-[150px] text-base font-inter rounded focus:outline-none  ${styles.customSelect}`}
+                />
+
+                <input
+                  placeholder="Description"
+                  className={`text-base  font-inter  rounded focus:outline-none ${styles["input-placeholder"]}  ${styles["input-text-2"]}`}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-[23px] cursor-pointer">
+            <Image
+              src="/assets/dashboard/modal/add.svg"
+              alt="add"
+              width={24}
+              height={24}
+            />
+            <span className="font-inter text-base text-[#000000]">
+              Add custom property
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Seperation */}
+      <div className="border-t w-full h-[1.5px] border-[#DEDEDE]"></div>
+
+      {/* Attachment */}
 
       {/* Start writing, or drag your own files here. */}
+
+      <input
+        type="text"
+        placeholder="Start writing, or drag your own files here."
+        className={`text-base font-inter  focus:outline-none ${styles["input-placeholder"]} ${styles["input-text-2"]}`}
+      />
     </div>
   );
 };
