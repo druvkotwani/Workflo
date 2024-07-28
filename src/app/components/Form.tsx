@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function vaildEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -30,6 +31,8 @@ const Form = () => {
   const emailWrong = () => toast("⚠️ Email is not valid!");
   const passwordShort = () => toast("🥷 Password is too short!");
 
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,6 +54,9 @@ const Form = () => {
     if (pathname === "/signup" && password.length < 8) {
       passwordShort();
       return;
+    } else if (pathname === "/signup" && name.length === 0) {
+      toast("🤡 Name is required!");
+      return;
     }
     // if (validPassword(password) === false) {
     //   passwordShort();
@@ -61,6 +67,11 @@ const Form = () => {
     setEmail("");
     setName("");
     // pathname === "/signup" ? signUp() : "";
+
+    // Redirect to sign-in page after successful sign-up
+    if (pathname === "/signup") {
+      router.push("/signin");
+    }
   };
 
   return (
