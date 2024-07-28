@@ -25,9 +25,15 @@ const data = [
 ];
 
 const Modal = () => {
-  const { setShowModal } = useContext(ModalContext);
+  const { setShowModal, status, setStatus } = useContext(ModalContext);
   return (
-    <div className="h-screen absolute right-0 top-0 z-10 bg-white min-w-[670px] pt-4 flex flex-col gap-8 px-6">
+    <div
+      data-aos="fade-left"
+      data-aos-offset="200"
+      data-aos-easing="ease-in-out"
+      data-aos-duration="400"
+      className="h-screen absolute right-0 top-0 z-10 bg-white min-w-[670px] pt-4 flex flex-col gap-8 px-6"
+    >
       {/* Div */}
       <div className="flex flex-col gap-[27px]">
         <div className="flex justify-between items-center">
@@ -97,21 +103,26 @@ const Modal = () => {
               </div>
               <div className="flex flex-col gap-8 w-full ">
                 <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
                   className={`max-w-[150px] text-base font-inter rounded focus:outline-none ${styles.customSelect}`}
                 >
                   <option
                     className="text-[#C1BDBD] font-inter text-base"
-                    value=""
+                    value="Not Selected"
                     disabled
                     selected
                     hidden
                   >
                     Not Selected
                   </option>
-                  <option value="to-do">To do</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="under-review">Under review</option>
-                  <option value="finished">Finished</option>
+                  {["To do", "In progress", "Under review", "Finished"].map(
+                    (item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    )
+                  )}
                 </select>
 
                 <select
@@ -159,8 +170,6 @@ const Modal = () => {
 
       {/* Seperation */}
       <div className="border-t w-full h-[1.5px] border-[#DEDEDE]"></div>
-
-      {/* Attachment */}
 
       {/* Start writing, or drag your own files here. */}
 

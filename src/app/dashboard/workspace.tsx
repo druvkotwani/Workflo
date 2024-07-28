@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button2 from "../components/Button2";
 import List from "../components/List";
 import { v4 as uuidv4 } from "uuid";
 import dynamic from "next/dynamic";
 import { ListProps } from "../components/List";
+import { ModalContext } from "../context/modalContext";
 
 const tempData = [
   {
@@ -102,6 +103,7 @@ const Draggable = dynamic(
 );
 
 const Workspace = () => {
+  const { setShowModal, setStatus } = useContext(ModalContext);
   const [columns, setColumns] = useState<ColumnsState>({
     "To do": tempData.filter((item) => item.where === "To do"),
     "In progress": tempData.filter((item) => item.where === "In progress"),
@@ -174,7 +176,9 @@ const Workspace = () => {
                     </Draggable>
                   ))}
                   {provided.placeholder}
-                  <Button2 />
+                  <Button2
+                    onClick={() => (setShowModal(true), setStatus(columnName))}
+                  />
                 </div>
               )}
             </Droppable>

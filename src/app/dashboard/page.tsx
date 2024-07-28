@@ -4,6 +4,7 @@ import Dashboard from "./dashboard";
 import Modal from "../components/Modal";
 import ModalDisplay from "./modalDisplay";
 import { ModalProvider } from "../context/modalContext";
+import AOSInit from "./aos";
 
 const Page = () => {
   return (
@@ -16,6 +17,7 @@ const Page = () => {
 
         <ModalDisplay />
       </div>
+      <AOSInit />
     </ModalProvider>
   );
 };

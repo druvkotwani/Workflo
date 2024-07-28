@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../components/Button";
 import Workspace from "./workspace";
+import { ModalContext } from "../context/modalContext";
 const features = [
   {
     heading: "Introducing tags",
@@ -41,6 +42,7 @@ const data = [
 ];
 
 const Dashboard = () => {
+  const { setShowModal, setStatus } = useContext(ModalContext);
   const [infoHover, setInfoHover] = useState(false);
   const [headerTab, setHeaderTab] = useState("");
   return (
@@ -139,7 +141,11 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-            <Button text="Create new" textClass="font-medium text-base" />
+            <Button
+              onClick={() => (setShowModal(true), setStatus("Not Selected"))}
+              text="Create new"
+              textClass="font-medium text-base"
+            />
           </div>
         </div>
       </div>
