@@ -1,16 +1,22 @@
 import React from "react";
 import Sidebar from "./sidebar";
 import Dashboard from "./dashboard";
+import Modal from "../components/Modal";
+import ModalDisplay from "./modalDisplay";
+import { ModalProvider } from "../context/modalContext";
 
 const Page = () => {
   return (
-    <div className="bg-[#F7F7F7]  flex h-screen">
-      <Sidebar />
-      <div className=" ml-[301px] mr-4">
-        {" "}
-        <Dashboard />
+    <ModalProvider>
+      <div className="bg-[#F7F7F7]  flex h-screen">
+        <Sidebar />
+        <div className=" ml-[301px] mr-4">
+          <Dashboard />
+        </div>
+
+        <ModalDisplay />
       </div>
-    </div>
+    </ModalProvider>
   );
 };
 

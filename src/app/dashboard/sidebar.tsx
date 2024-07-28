@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../components/Button";
+import { ModalContext } from "../context/modalContext";
 
 // Data for the sidebar
 const data = [
@@ -31,6 +32,8 @@ const data = [
 
 const Sidebar = () => {
   const [selectedTab, setSelectedTab] = useState("Home");
+  const { setShowModal } = useContext(ModalContext);
+
   return (
     <div className="fixed top-0 left-0 w-[285px] h-screen  py-6 px-4 bg-white lg:w-[285px] flex flex-col gap-4 border-r border-r-[#DEDEDE]">
       {/* Profile + Additional Settings + Logout */}
@@ -102,7 +105,7 @@ const Sidebar = () => {
         </div>
 
         {/* Create new Task Button */}
-        <Button text="Create new task" />
+        <Button onClick={() => setShowModal(true)} text="Create new task" />
       </div>
 
       {/* Download the app */}

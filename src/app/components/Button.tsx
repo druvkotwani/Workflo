@@ -4,11 +4,13 @@ import React from "react";
 interface ButtonProps {
   text?: string;
   textClass?: string;
+  onClick?: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, textClass }) => {
+const Button: React.FC<ButtonProps> = ({ text, textClass, onClick }) => {
   return (
     <div
+      onClick={onClick}
       className={` cursor-pointer rounded-lg p-[1.5px] bg-gradient-to-t from-[#4B36CC] to-[#9C93D4]`}
     >
       <button
