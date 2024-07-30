@@ -259,6 +259,7 @@ const Modal = () => {
     }
     selectedTask && deleteTask(selectedTask.id), setShowModal(false);
     setSelectedTask(null);
+    setToastMessage("🗑️ Task deleted successfully");
   };
   return (
     <>

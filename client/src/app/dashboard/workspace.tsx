@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import dynamic from "next/dynamic";
 import { ListProps } from "../components/List";
 import { ModalContext, Task } from "../context/modalContext";
+import { toast, ToastContainer } from "react-toastify";
 
 const col = ["To do", "In progress", "Under review", "Finished"];
 
@@ -34,6 +35,7 @@ const Workspace = () => {
     data,
     setSelectedTask,
     selectedTask,
+    toastMessage,
     token,
   } = useContext(ModalContext);
   const [columns, setColumns] = useState<ColumnsState>({
@@ -51,6 +53,12 @@ const Workspace = () => {
       Finished: data.filter((item) => item.where === "Finished"),
     });
   }, [data]);
+
+  useEffect(() => {
+    if (toastMessage) {
+      toast(toastMessage);
+    }
+  }, [toastMessage]);
 
   const updateTaskStatus = async (task: ListProps, newStatus: string) => {
     try {
@@ -162,6 +170,19 @@ const Workspace = () => {
           ))}
         </div>
       </DragDropContext>
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };
