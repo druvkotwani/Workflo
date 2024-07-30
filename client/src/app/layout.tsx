@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Barlow } from "next/font/google";
 import "./globals.css";
+import { ModalProvider } from "./context/modalContext";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
   return (
     // The `className` prop is used to apply the font styles to the HTML element.
     <html lang="en" className={barlow.variable + " " + inter.className}>
-      <body>{children}</body>
+      <body>
+        <ModalProvider>{children}</ModalProvider>
+      </body>
     </html>
   );
 }

@@ -32,8 +32,8 @@ const data = [
 
 const Sidebar = () => {
   const [selectedTab, setSelectedTab] = useState("Home");
-  const { setShowModal, setStatus } = useContext(ModalContext);
-
+  const { setShowModal, setStatus, username, setUsername, setToastMessage } =
+    useContext(ModalContext);
   return (
     <div className="fixed top-0 left-0 w-[285px] h-screen  py-6 px-4 bg-white lg:w-[285px] flex flex-col gap-4 border-r border-r-[#DEDEDE]">
       {/* Profile + Additional Settings + Logout */}
@@ -49,7 +49,7 @@ const Sidebar = () => {
           />
 
           <p className="ml-2 font-inter font-medium text-[20px] text-[#080808]">
-            Joe Gardner
+            {username}
           </p>
         </div>
 
@@ -71,6 +71,11 @@ const Sidebar = () => {
           </div>
           <Link
             href={"/signin"}
+            onClick={() => {
+              setToastMessage("😶‍🌫️ Logged out successfully");
+              setUsername("");
+              localStorage.removeItem("token");
+            }}
             className="bg-[#F4F4F4] text-[#797979] text-base font-inter rounded flex items-center justify-start p-2"
           >
             Logout

@@ -4,13 +4,10 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-
-function vaildEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+import { ModalContext } from "../context/modalContext";
 
 function validCredentials(
   email: string,
@@ -19,58 +16,64 @@ function validCredentials(
   pathname: string
 ) {
   if (pathname === "/signup") {
-    return vaildEmail(email) && password.length >= 8 && name.length > 0;
+    return email.length > 0 && password.length > 0 && name.length > 0;
   } else {
-    return vaildEmail(email);
+    return email.length > 0 && password.length > 0;
   }
 }
 
 const Form = () => {
+  const { setToastMessage, setUsername } = useContext(ModalContext);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const pathname = usePathname();
-  const emailWrong = () => toast("⚠️ Email is not valid!");
-  const passwordShort = () => toast("🥷 Password is too short!");
 
   const router = useRouter();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const handleEmailChange = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const password = formData.get("password");
 
-  const [isEmailValid, setIsEmailValid] = useState(true);
+    const url =
+      pathname === "/signup"
+        ? "http://localhost:8000/signup"
+        : "http://localhost:8000/signin";
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const emailValue = e.target.value;
-    setEmail(emailValue);
-    setIsEmailValid(vaildEmail(emailValue));
-  };
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          pathname === "/signup"
+            ? { name, email, password }
+            : { email, password }
+        ),
+      });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isEmailValid === false) {
-      emailWrong();
-      return;
-    }
-    if (pathname === "/signup" && password.length < 8) {
-      passwordShort();
-      return;
-    } else if (pathname === "/signup" && name.length === 0) {
-      toast("🤡 Name is required!");
-      return;
-    }
-    // if (validPassword(password) === false) {
-    //   passwordShort();
-    //   return;
-    // }
-    setIsEmailValid(true);
-    setPassword("");
-    setEmail("");
-    setName("");
-    // pathname === "/signup" ? signUp() : "";
-
-    // Redirect to sign-in page after successful sign-up
-    if (pathname === "/signup") {
-      router.push("/signin");
+      if (response.ok) {
+        if (pathname === "/signup") {
+          setToastMessage("😌 User created successfully");
+          router.push("/signin");
+        } else {
+          const data = await response.json();
+          setToastMessage("✈️ Sign-in successful");
+          localStorage.setItem("token", data.token);
+          setUsername(data.name);
+          router.push("/dashboard");
+        }
+      } else {
+        const data = await response.json();
+        toast(data.message);
+      }
+    } catch (error) {
+      toast("⚠️ Error: " + error);
     }
   };
 
@@ -87,13 +90,14 @@ const Form = () => {
 
           <div className="py-8 w-full h-full">
             {/* Email/Password */}
-            <form className="flex flex-col " onSubmit={handleSubmit}>
+            <form className="flex flex-col " onSubmit={handleEmailChange}>
               <div className="flex flex-col gap-6 font-inter">
                 {pathname === "/signup" && (
                   <input
-                    type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    type="text"
+                    name="name"
                     placeholder="Full name"
                     className=" py-4 px-3 font-inter text-[#606060] text-[20px] bg-[#EBEBEB] rounded-lg  focus:outline-none"
                   />
@@ -101,17 +105,19 @@ const Form = () => {
                 <input
                   type="text"
                   value={email}
-                  onChange={handleEmailChange}
+                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
                   placeholder="Your Email"
                   className={`py-4 px-3 text-[#606060] font-inter text-[20px] bg-[#EBEBEB] rounded-lg focus:outline-none `}
                 />
 
                 <div className="relative w-full">
                   <input
-                    type={passwordVisible ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    type={passwordVisible ? "text" : "password"}
                     placeholder="Password"
+                    name="password"
                     className=" py-4 px-3 font-inter text-[#606060] w-full text-[20px] bg-[#EBEBEB] rounded-lg  focus:outline-none"
                   />
                   {/* Toggle Visibility for Password */}
@@ -128,13 +134,20 @@ const Form = () => {
                 </div>
               </div>
 
-              <button className=" mt-[22px] shadow-md bg-gradient-to-t from-[#4B36CC] to-[#9C93D4] p-[1.5px] rounded-lg">
+              <button
+                disabled={
+                  validCredentials(email, password, name, pathname || "") ===
+                  false
+                }
+                className=" mt-[22px] shadow-md bg-gradient-to-t from-[#4B36CC] to-[#9C93D4] p-[1.5px] rounded-lg"
+              >
                 <div
-                  className={`py-3 flex items-center justify-center w-full ${
-                    validCredentials(email, password, name, pathname) === true
+                  className={`py-3 flex items-center justify-center w-full text-white rounded-lg text-lg p-2 ${
+                    validCredentials(email, password, name, pathname || "") ===
+                    true
                       ? "bg-gradient-to-t from-[#4C38C2] to-[#2F2188] "
                       : " "
-                  } text-white rounded-lg text-lg p-2  `}
+                  }   `}
                 >
                   {pathname === "/signup" ? "Sign Up" : "Login"}
                 </div>

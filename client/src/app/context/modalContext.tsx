@@ -67,6 +67,10 @@ export const ModalContext = createContext({
   selectedTask: null as Task | null,
   setSelectedTask: (value: Task | null) => {},
   deleteTask: (id: string) => {},
+  toastMessage: "",
+  setToastMessage: (value: string) => {},
+  username: "",
+  setUsername: (value: string) => {},
 });
 
 export const ModalProvider = ({ children }: any) => {
@@ -75,6 +79,8 @@ export const ModalProvider = ({ children }: any) => {
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState("Not Selected");
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [toastMessage, setToastMessage] = useState("");
+  const [username, setUsername] = useState("");
 
   const deleteTask = (id: string) => {
     setData((prev: any) => prev.filter((task: any) => task.id !== id));
@@ -94,6 +100,10 @@ export const ModalProvider = ({ children }: any) => {
         selectedTask,
         setSelectedTask,
         deleteTask,
+        toastMessage,
+        setToastMessage,
+        username,
+        setUsername,
       }}
     >
       {children}

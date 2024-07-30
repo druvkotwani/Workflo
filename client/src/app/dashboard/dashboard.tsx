@@ -41,8 +41,20 @@ const data = [
   },
 ];
 
+function goodMorning() {
+  const date = new Date();
+  const hours = date.getHours();
+  if (hours < 12) {
+    return "Good morning";
+  } else if (hours < 18) {
+    return "Good afternoon";
+  } else {
+    return "Good evening";
+  }
+}
+
 const Dashboard = () => {
-  const { setShowModal, setStatus } = useContext(ModalContext);
+  const { setShowModal, setStatus, username } = useContext(ModalContext);
   const [infoHover, setInfoHover] = useState(false);
   const [headerTab, setHeaderTab] = useState("");
   return (
@@ -51,7 +63,7 @@ const Dashboard = () => {
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between w-full">
           <h2 className="font-barlow font-semibold text-3xl md:text-5xl text-[#080808]">
-            Good morning, Joe!
+            {goodMorning()}, {username}!
           </h2>
 
           <div className="font-inter text-[#080808] flex items-center gap-2 relative">
