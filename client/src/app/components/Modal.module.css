@@ -4,7 +4,7 @@
 }
 
 .input-text {
-  color: #797979; /* Darker color for the input text */
+  color: #000000; /* Darker color for the input text */
 }
 
 .customSelect {
@@ -15,6 +15,17 @@
   background-image: none; /* Remove background image */
   color: #c1bdbd;
   padding: 0 8px;
+  border-radius: 0%;
+}
+.customSelectBlack {
+  -webkit-appearance: none; /* Remove default arrow in Chrome, Safari, and Opera */
+  -moz-appearance: none; /* Remove default arrow in Firefox */
+  appearance: none; /* Remove default arrow in modern browsers */
+  background: transparent; /* Ensure background is transparent */
+  background-image: none; /* Remove background image */
+  color: #000000;
+  padding: 0 8px;
+  border-radius: 0%;
 }
 
 .customSelect::-ms-expand {
@@ -24,4 +35,16 @@
 .input-text-2 {
   color: #000000;
   padding: 0 8px;
+}
+
+.customSelect {
+  position: relative;
+}
+
+.customSelect label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
 }

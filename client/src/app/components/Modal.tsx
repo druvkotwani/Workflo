@@ -144,7 +144,90 @@ const Modal = () => {
     setShowModal(false);
     setSelectedTask(null);
   };
+  const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validTitleAndStatus(title, status)) {
+      titleMissing();
+      return;
+    }
 
+    const updatedTask = {
+      id: selectedTask ? selectedTask.id : uuidv4(),
+      heading: title,
+      description,
+      priority,
+      date: deadline,
+      time: new Date().toLocaleTimeString(),
+      where: status,
+    };
+
+    if (selectedTask) {
+      // Update existing task
+      setData((prev: any) =>
+        prev.map((task: any) =>
+          task.id === updatedTask.id ? updatedTask : task
+        )
+      );
+
+      // Send updated task to backend
+      try {
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_API_URL + `/tasks/${updatedTask.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ task: updatedTask }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to update task");
+        }
+
+        const result = await response.json();
+
+        console.log("Task updated:", result);
+      } catch (error) {
+        console.error("Error updating task:", error);
+        toast.error("Failed to update task");
+      }
+    } else {
+      // Add new task
+      setData((prev: any) => [updatedTask, ...prev]);
+
+      // Send new task to backend
+      try {
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_API_URL + "/tasks",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ task: updatedTask }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to create task");
+        }
+
+        const result = await response.json();
+
+        console.log("Task created:", result);
+      } catch (error) {
+        console.error("Error creating task:", error);
+        toast.error("Failed to create task");
+      }
+    }
+    setToastMessage("✅ Task saved successfully");
+    setShowModal(false);
+    setSelectedTask(null);
+  };
   const handleDelete = async () => {
     if (selectedTask) {
       // Delete task from backend
@@ -207,7 +290,7 @@ const Modal = () => {
               />
             </div>
             <div className="flex items-center gap-4">
-              <div
+              <button
                 onClick={handleSubmit}
                 className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]"
               >
@@ -218,8 +301,8 @@ const Modal = () => {
                   width={24}
                   height={24}
                 />
-              </div>
-              <div
+              </button>
+              <button
                 onClick={handleDelete}
                 className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]"
               >
@@ -230,7 +313,7 @@ const Modal = () => {
                   width={24}
                   height={24}
                 />
-              </div>
+              </button>
               <div className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]">
                 Share
                 <Image
@@ -255,13 +338,15 @@ const Modal = () => {
           {/* Data */}
           <div className="flex flex-col gap-[38px]">
             <div className="flex flex-col gap-8 items-start justify-center">
-              <input
-                type="text"
-                onChange={(e) => setTitle(e.target.value)}
-                value={title}
-                placeholder="Title"
-                className={`text-5xl font-barlow font-semibold focus:outline-none ${styles["input-placeholder"]} ${styles["input-text"]}`}
-              />
+              <form onSubmit={handleSubmitForm}>
+                <input
+                  type="text"
+                  onChange={(e) => setTitle(e.target.value)}
+                  value={title}
+                  placeholder="Title"
+                  className={`text-5xl font-barlow font-semibold focus:outline-none ${styles["input-placeholder"]} ${styles["input-text"]}`}
+                />
+              </form>
 
               <div className="flex gap-[60px] w-full">
                 <div className="flex flex-col gap-8">
@@ -279,14 +364,22 @@ const Modal = () => {
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-col gap-8 w-full ">
+                {/* Status, Priority,Deadline,Description */}
+                <form
+                  onSubmit={handleSubmitForm}
+                  className="flex flex-col gap-8 w-full "
+                >
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
-                    className={`max-w-[150px] text-base font-inter rounded focus:outline-none ${styles.customSelect}`}
+                    className={`max-w-[150px]  !rounded-none text-base font-inter  focus:outline-none ${
+                      status === "Not Selected"
+                        ? styles.customSelect
+                        : styles.customSelectBlack
+                    }`}
                   >
                     <option
-                      className="text-[#C1BDBD] font-inter text-base"
+                      className="text-[#C1BDBD] font-inter text-base !pb-1"
                       value="Not Selected"
                       disabled
                       selected
@@ -296,7 +389,12 @@ const Modal = () => {
                     </option>
                     {["To do", "In progress", "Under review", "Finished"].map(
                       (item, index) => (
-                        <option key={index} value={item}>
+                        <option
+                          key={index}
+                          style={{ color: "#000000" }}
+                          value={item}
+                          className="!pb-1"
+                        >
                           {item}
                         </option>
                       )
@@ -306,7 +404,11 @@ const Modal = () => {
                   <select
                     value={priority}
                     onChange={(e) => setPriorityLocal(e.target.value)}
-                    className={`max-w-[150px] text-base font-inter rounded focus:outline-none ${styles.customSelect}`}
+                    className={`max-w-[150px] text-base font-inter rounded focus:outline-none ${
+                      priority === "Not Selected"
+                        ? styles.customSelect
+                        : styles.customSelectBlack
+                    }`}
                   >
                     <option
                       className="text-[#C1BDBD] font-inter text-base"
@@ -317,16 +419,38 @@ const Modal = () => {
                     >
                       Not Selected
                     </option>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Urgent">Urgent</option>
+                    <option
+                      className="!pb-1"
+                      style={{ color: "#000000" }}
+                      value="Low"
+                    >
+                      Low
+                    </option>
+                    <option
+                      className="!pb-1"
+                      style={{ color: "#000000" }}
+                      value="Medium"
+                    >
+                      Medium
+                    </option>
+                    <option
+                      className="!pb-1"
+                      style={{ color: "#000000" }}
+                      value="Urgent"
+                    >
+                      Urgent
+                    </option>
                   </select>
 
                   <input
                     value={deadline}
                     onChange={(e) => setDeadlineLocal(e.target.value)}
                     type="date"
-                    className={`w-full max-w-[150px] text-base font-inter rounded focus:outline-none  ${styles.customSelect}`}
+                    className={`w-full max-w-[150px] text-base font-inter rounded focus:outline-none  ${
+                      deadline === ""
+                        ? styles.customSelect
+                        : styles.customSelectBlack
+                    }`}
                   />
 
                   <input
@@ -335,7 +459,7 @@ const Modal = () => {
                     onChange={(e) => setDescriptionLocal(e.target.value)}
                     className={`text-base  font-inter  rounded focus:outline-none ${styles["input-placeholder"]}  ${styles["input-text-2"]}`}
                   />
-                </div>
+                </form>
               </div>
             </div>
             <div className="flex gap-[23px] cursor-pointer">
