@@ -41,8 +41,8 @@ const Form = () => {
 
     const url =
       pathname === "/signup"
-        ? "http://localhost:8000/signup"
-        : "http://localhost:8000/signin";
+        ? process.env.NEXT_PUBLIC_API_URL + "/signup"
+        : process.env.NEXT_PUBLIC_API_URL + "/signin";
 
     try {
       const response = await fetch(url, {

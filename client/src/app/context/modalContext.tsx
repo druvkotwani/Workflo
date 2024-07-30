@@ -56,7 +56,7 @@ const tempData = [
 ];
 
 const fetchUserTasks = async (token: any) => {
-  const response = await fetch("http://localhost:8000/tasks", {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/tasks", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

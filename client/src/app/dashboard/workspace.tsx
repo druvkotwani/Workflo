@@ -54,14 +54,17 @@ const Workspace = () => {
 
   const updateTaskStatus = async (task: ListProps, newStatus: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/tasks/${task.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ task: { ...task, where: newStatus } }),
-      });
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + `/tasks/${task.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ task: { ...task, where: newStatus } }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update task status");

@@ -88,7 +88,7 @@ const Modal = () => {
       // Send updated task to backend
       try {
         const response = await fetch(
-          `http://localhost:8000/tasks/${updatedTask.id}`,
+          process.env.NEXT_PUBLIC_API_URL + `/tasks/${updatedTask.id}`,
           {
             method: "PUT",
             headers: {
@@ -116,14 +116,17 @@ const Modal = () => {
 
       // Send new task to backend
       try {
-        const response = await fetch("http://localhost:8000/tasks", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ task: updatedTask }),
-        });
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_API_URL + "/tasks",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ task: updatedTask }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to create task");
@@ -147,7 +150,7 @@ const Modal = () => {
       // Delete task from backend
       try {
         const response = await fetch(
-          `http://localhost:8000/tasks/${selectedTask.id}`,
+          process.env.NEXT_PUBLIC_API_URL + `/tasks/${selectedTask.id}`,
           {
             method: "DELETE",
             headers: {
