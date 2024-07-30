@@ -112,6 +112,7 @@ const Workspace = () => {
               alt="Arrow"
               width={24}
               height={24}
+              className="cursor-pointer"
             />
           </div>
         ))}

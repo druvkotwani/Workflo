@@ -64,7 +64,7 @@ const Sidebar = () => {
                   alt={item}
                   width={24}
                   height={24}
-                  className="cursor-pointer"
+                  className="cursor-pointer hover:scale-110 transform transition-all duration-300  "
                 />
               )
             )}
@@ -76,7 +76,7 @@ const Sidebar = () => {
               setUsername("");
               localStorage.removeItem("token");
             }}
-            className="bg-[#F4F4F4] text-[#797979] text-base font-inter rounded flex items-center justify-start p-2"
+            className="bg-[#F4F4F4] text-[#797979] hover:border hover:border-[#ddd] border border-transparent text-base font-inter rounded flex items-center justify-start p-2"
           >
             Logout
           </Link>

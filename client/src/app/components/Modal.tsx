@@ -279,20 +279,20 @@ const Modal = () => {
                 width={24}
                 height={24}
                 onClick={() => (setShowModal(false), setSelectedTask(null))}
-                className="cursor-pointer"
+                className="cursor-pointer  hover:bg-[#f4f4f4] hover:rounded-full hover:border "
               />
               <Image
                 src="/assets/dashboard/modal/zoom.svg"
                 alt="Big"
                 width={24}
                 height={24}
-                className="cursor-pointer"
+                className="cursor-pointer hover:bg-[#f4f4f4] hover:rounded-full hover:border "
               />
             </div>
             <div className="flex items-center gap-4">
               <button
                 onClick={handleSubmit}
-                className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]"
+                className="cursor-pointer border border-transparent hover:border hover:border-[#ddd] p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]"
               >
                 Save
                 <Image
@@ -304,7 +304,7 @@ const Modal = () => {
               </button>
               <button
                 onClick={handleDelete}
-                className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]"
+                className="cursor-pointer border border-transparent hover:border hover:border-[#ddd] p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]"
               >
                 Delete
                 <Image
@@ -314,7 +314,7 @@ const Modal = () => {
                   height={24}
                 />
               </button>
-              <div className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]">
+              <div className="cursor-pointer border border-transparent hover:border hover:border-[#ddd] p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]">
                 Share
                 <Image
                   src="/assets/dashboard/modal/share.svg"
@@ -323,7 +323,7 @@ const Modal = () => {
                   height={24}
                 />
               </div>
-              <div className="p-2 cursor-pointer flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]">
+              <button className="p-2 border border-transparent hover:border hover:border-[#ddd] cursor-pointer flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]">
                 Favourite
                 <Image
                   src="/assets/dashboard/modal/favourite.svg"
@@ -331,7 +331,7 @@ const Modal = () => {
                   width={24}
                   height={24}
                 />
-              </div>
+              </button>
             </div>
           </div>
 

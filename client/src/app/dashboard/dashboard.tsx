@@ -135,7 +135,7 @@ const Dashboard = () => {
                 <div
                   key={index}
                   onClick={() => setHeaderTab(item.name)}
-                  className={`flex rounded cursor-pointer items-center p-2 gap-[14px] ${
+                  className={`  hover:border hover:border-[#DDDDDD] flex rounded cursor-pointer items-center p-2 gap-[14px] ${
                     headerTab === item.name
                       ? " border border-[#DDDDDD] bg-[#efefef]"
                       : "bg-[#F4F4F4]  border border-transparent"
