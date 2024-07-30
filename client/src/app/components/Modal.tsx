@@ -41,7 +41,6 @@ const Modal = () => {
     setSelectedTask,
     deleteTask,
     token,
-    setToastMessage,
   } = useContext(ModalContext);
   const [title, setTitle] = useState(selectedTask?.heading || "");
 
@@ -140,7 +139,6 @@ const Modal = () => {
         toast.error("Failed to create task");
       }
     }
-    setToastMessage("✅ Task saved successfully");
     setShowModal(false);
     setSelectedTask(null);
   };
@@ -224,7 +222,6 @@ const Modal = () => {
         toast.error("Failed to create task");
       }
     }
-    setToastMessage("✅ Task saved successfully");
     setShowModal(false);
     setSelectedTask(null);
   };
@@ -259,7 +256,6 @@ const Modal = () => {
     }
     selectedTask && deleteTask(selectedTask.id), setShowModal(false);
     setSelectedTask(null);
-    setToastMessage("🗑️ Task deleted successfully");
   };
   return (
     <>
