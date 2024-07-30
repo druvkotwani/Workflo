@@ -78,8 +78,7 @@ const Workspace = () => {
         throw new Error("Failed to update task status");
       }
 
-      const result = await response.json();
-      console.log("Task status updated:", result);
+      // const result = await response.json();
     } catch (error) {
       console.error("Error updating task status:", error);
     }

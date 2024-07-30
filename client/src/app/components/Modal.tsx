@@ -102,9 +102,7 @@ const Modal = () => {
           throw new Error("Failed to update task");
         }
 
-        const result = await response.json();
-
-        console.log("Task updated:", result);
+        // const result = await response.json();
       } catch (error) {
         console.error("Error updating task:", error);
         toast.error("Failed to update task");
@@ -131,9 +129,7 @@ const Modal = () => {
           throw new Error("Failed to create task");
         }
 
-        const result = await response.json();
-
-        console.log("Task created:", result);
+        // const result = await response.json();
       } catch (error) {
         console.error("Error creating task:", error);
         toast.error("Failed to create task");
@@ -185,9 +181,7 @@ const Modal = () => {
           throw new Error("Failed to update task");
         }
 
-        const result = await response.json();
-
-        console.log("Task updated:", result);
+        // const result = await response.json();
       } catch (error) {
         console.error("Error updating task:", error);
         toast.error("Failed to update task");
@@ -214,9 +208,7 @@ const Modal = () => {
           throw new Error("Failed to create task");
         }
 
-        const result = await response.json();
-
-        console.log("Task created:", result);
+        // const result = await response.json();
       } catch (error) {
         console.error("Error creating task:", error);
         toast.error("Failed to create task");
@@ -247,8 +239,6 @@ const Modal = () => {
         setData((prev: any) =>
           prev.filter((task: any) => task.id !== selectedTask.id)
         );
-
-        console.log("Task deleted:", selectedTask.id);
       } catch (error) {
         console.error("Error deleting task:", error);
         toast.error("Failed to delete task");
