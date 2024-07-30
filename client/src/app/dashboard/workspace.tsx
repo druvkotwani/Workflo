@@ -28,7 +28,7 @@ const Draggable = dynamic(
   { ssr: false }
 );
 
-const Workspace = () => {
+const Workspace = ({ search }: any) => {
   const {
     setShowModal,
     setStatus,
@@ -38,6 +38,20 @@ const Workspace = () => {
     toastMessage,
     token,
   } = useContext(ModalContext);
+  const [filteredData, setFilteredData] = useState(data);
+
+  useEffect(() => {
+    if (search) {
+      setFilteredData(
+        data.filter((item: Task) =>
+          item?.heading?.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredData(data);
+    }
+  }, [search, data]);
+
   const [columns, setColumns] = useState<ColumnsState>({
     "To do": [],
     "In progress": [],
@@ -47,12 +61,16 @@ const Workspace = () => {
 
   useEffect(() => {
     setColumns({
-      "To do": data.filter((item) => item.where === "To do"),
-      "In progress": data.filter((item) => item.where === "In progress"),
-      "Under review": data.filter((item) => item.where === "Under review"),
-      Finished: data.filter((item) => item.where === "Finished"),
+      "To do": filteredData.filter((item) => item.where === "To do"),
+      "In progress": filteredData.filter(
+        (item) => item.where === "In progress"
+      ),
+      "Under review": filteredData.filter(
+        (item) => item.where === "Under review"
+      ),
+      Finished: filteredData.filter((item) => item.where === "Finished"),
     });
-  }, [data]);
+  }, [filteredData]);
 
   useEffect(() => {
     if (toastMessage) {

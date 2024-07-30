@@ -57,6 +57,7 @@ const Dashboard = () => {
   const { setShowModal, setStatus, username } = useContext(ModalContext);
   const [infoHover, setInfoHover] = useState(false);
   const [headerTab, setHeaderTab] = useState("");
+  const [search, setSearch] = useState("");
   return (
     <div className="pt-6  w-full  ">
       {/* Header */}
@@ -115,6 +116,8 @@ const Dashboard = () => {
             <div className="w-full relative">
               <input
                 type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search"
                 className="text-[#797979] p-2 w-full rounded-lg border-[#E9E9E9] border focus:outline-none"
               />
@@ -163,7 +166,7 @@ const Dashboard = () => {
       </div>
 
       {/* Lists */}
-      <Workspace />
+      <Workspace search={search} />
     </div>
   );
 };
