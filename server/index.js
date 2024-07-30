@@ -3,6 +3,7 @@ const cors = require('cors')
 const app = express();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const authMiddleware = require('./middleware/auth');
 
 app.use(express.json())
 
@@ -27,9 +28,7 @@ app.post('/signup', async (req, res) => {
 
     const { email } = req.body
 
-    const existingUser = await Users.findOne(
-        { email: email }
-    )
+    const existingUser = await Users.findOne({ email: email })
 
     if (existingUser) {
         return res.status(400).send({ message: '😅 User with this email already exists' })
@@ -37,7 +36,8 @@ app.post('/signup', async (req, res) => {
     let user = new Users({
         name: req.body.name,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
+        password: bcrypt.hashSync(req.body.password, 8),
+        tasks: []
     })
     let result = await user.save()
     res.send(result)
@@ -71,6 +71,19 @@ app.post('/signin', async (req, res) => {
             message: error.message
         });
     }
+});
+
+app.post('/tasks', authMiddleware, async (req, res) => {
+    const task = req.body.task;
+
+    req.user.tasks.push(task);
+    await req.user.save();
+
+    res.status(201).send(req.user.tasks);
+});
+
+app.get('/tasks', authMiddleware, async (req, res) => {
+    res.send(req.user.tasks);
 });
 
 app.listen(8000)
