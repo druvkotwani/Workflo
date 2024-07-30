@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export interface Task {
@@ -55,6 +55,16 @@ const tempData = [
   },
 ];
 
+const fetchUserTasks = async (token: any) => {
+  const response = await fetch("http://localhost:8000/tasks", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const tasks = await response.json();
+  return tasks;
+};
+
 export const ModalContext = createContext({
   title: "",
   setTitle: (value: string) => {},
@@ -71,6 +81,8 @@ export const ModalContext = createContext({
   setToastMessage: (value: string) => {},
   username: "",
   setUsername: (value: string) => {},
+  token: "",
+  setToken: (value: string) => {},
 });
 
 export const ModalProvider = ({ children }: any) => {
@@ -81,10 +93,19 @@ export const ModalProvider = ({ children }: any) => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [toastMessage, setToastMessage] = useState("");
   const [username, setUsername] = useState("");
+  const [token, setToken] = useState("");
 
   const deleteTask = (id: string) => {
     setData((prev: any) => prev.filter((task: any) => task.id !== id));
   };
+
+  useEffect(() => {
+    if (token) {
+      fetchUserTasks(token).then((userTasks) => {
+        setData([...tempData, ...userTasks]);
+      });
+    }
+  }, [token]);
 
   return (
     <ModalContext.Provider
@@ -104,6 +125,8 @@ export const ModalProvider = ({ children }: any) => {
         setToastMessage,
         username,
         setUsername,
+        token,
+        setToken,
       }}
     >
       {children}

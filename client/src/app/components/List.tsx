@@ -21,20 +21,10 @@ function checkPriority(priority: string) {
     return "bg-[#FF6B6B]";
   } else if (priority === "Medium") {
     return "bg-[#FFA235]";
-  } else {
+  } else if (priority === "Low") {
     return "bg-[#0ECC5A]";
-  }
-}
-
-function checkWhere(where: string) {
-  if (where === "To do") {
-    return "col-start-1 col-end-2";
-  } else if (where === "In progress") {
-    return "col-start-2 col-end-3";
-  } else if (where === "Under review") {
-    return "col-start-3 col-end-4";
   } else {
-    return "col-start-4 col-end-5";
+    return "bg-[#0b243f]";
   }
 }
 
@@ -42,10 +32,9 @@ const List: React.FC<ListProps> = ({
   id,
   heading,
   description,
-  priority = "bg-[#0ECC5A]",
+  priority = "bg-[#0b243f]",
   date,
   time,
-  index,
   draggableProps,
   dragHandleProps,
   onClick = () => {},

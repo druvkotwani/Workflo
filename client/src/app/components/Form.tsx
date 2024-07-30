@@ -23,7 +23,7 @@ function validCredentials(
 }
 
 const Form = () => {
-  const { setToastMessage, setUsername } = useContext(ModalContext);
+  const { setToastMessage, setUsername, setToken } = useContext(ModalContext);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -64,6 +64,7 @@ const Form = () => {
         } else {
           const data = await response.json();
           setToastMessage("✈️ Sign-in successful");
+          setToken(data.token);
           localStorage.setItem("token", data.token);
           setUsername(data.name);
           router.push("/dashboard");

@@ -86,4 +86,53 @@ app.get('/tasks', authMiddleware, async (req, res) => {
     res.send(req.user.tasks);
 });
 
+app.delete('/tasks/:id', authMiddleware, async (req, res) => {
+    try {
+        const taskId = req.params.id;
+        const user = req.user;
+
+        // Find the task to be deleted
+        const taskIndex = user.tasks.findIndex(task => task.id === taskId);
+
+        if (taskIndex === -1) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        // Remove the task from the user's tasks array
+        user.tasks.splice(taskIndex, 1);
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: 'Task deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.put('/tasks/:id', authMiddleware, async (req, res) => {
+    try {
+        const taskId = req.params.id;
+        const updatedTask = req.body.task;
+        const user = req.user;
+
+        // Find the task to be updated
+        const taskIndex = user.tasks.findIndex(task => task.id === taskId);
+
+        if (taskIndex === -1) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        // Update the task
+        user.tasks[taskIndex] = { ...user.tasks[taskIndex], ...updatedTask };
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: 'Task updated successfully', task: user.tasks[taskIndex] });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 app.listen(8000)

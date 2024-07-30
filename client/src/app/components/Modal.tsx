@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
-import { ModalContext } from "../context/modalContext";
-import styles from "./Modal.module.css";
-import { v4 as uuidv4 } from "uuid";
+import { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { v4 as uuidv4 } from "uuid";
+import { ModalContext } from "../context/modalContext";
+import styles from "./Modal.module.css";
 const tempData = [
   {
     name: "Status",
@@ -40,6 +40,8 @@ const Modal = () => {
     selectedTask,
     setSelectedTask,
     deleteTask,
+    token,
+    setToastMessage,
   } = useContext(ModalContext);
   const [title, setTitle] = useState(selectedTask?.heading || "");
 
@@ -59,7 +61,7 @@ const Modal = () => {
     }
   }, [selectedTask]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validTitleAndStatus(title, status)) {
       titleMissing();
       return;
@@ -82,12 +84,94 @@ const Modal = () => {
           task.id === updatedTask.id ? updatedTask : task
         )
       );
+
+      // Send updated task to backend
+      try {
+        const response = await fetch(
+          `http://localhost:8000/tasks/${updatedTask.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ task: updatedTask }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to update task");
+        }
+
+        const result = await response.json();
+
+        console.log("Task updated:", result);
+      } catch (error) {
+        console.error("Error updating task:", error);
+        toast.error("Failed to update task");
+      }
     } else {
       // Add new task
       setData((prev: any) => [updatedTask, ...prev]);
-    }
 
+      // Send new task to backend
+      try {
+        const response = await fetch("http://localhost:8000/tasks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ task: updatedTask }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create task");
+        }
+
+        const result = await response.json();
+
+        console.log("Task created:", result);
+      } catch (error) {
+        console.error("Error creating task:", error);
+        toast.error("Failed to create task");
+      }
+    }
+    setToastMessage("✅ Task saved successfully");
     setShowModal(false);
+    setSelectedTask(null);
+  };
+
+  const handleDelete = async () => {
+    if (selectedTask) {
+      // Delete task from backend
+      try {
+        const response = await fetch(
+          `http://localhost:8000/tasks/${selectedTask.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to delete task");
+        }
+
+        // Delete task from frontend
+        setData((prev: any) =>
+          prev.filter((task: any) => task.id !== selectedTask.id)
+        );
+
+        console.log("Task deleted:", selectedTask.id);
+      } catch (error) {
+        console.error("Error deleting task:", error);
+        toast.error("Failed to delete task");
+      }
+    }
+    selectedTask && deleteTask(selectedTask.id), setShowModal(false);
     setSelectedTask(null);
   };
   return (
@@ -133,10 +217,7 @@ const Modal = () => {
                 />
               </div>
               <div
-                onClick={() => (
-                  selectedTask && deleteTask(selectedTask.id),
-                  setShowModal(false)
-                )}
+                onClick={handleDelete}
                 className="cursor-pointer p-2 flex gap-[14px] bg-[#F4F4F4] rounded font-inter text-base text-[#797979]"
               >
                 Delete
@@ -281,7 +362,6 @@ const Modal = () => {
           className={`text-base font-inter  focus:outline-none ${styles["input-placeholder"]} ${styles["input-text-2"]}`}
         />
       </div>
-
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
