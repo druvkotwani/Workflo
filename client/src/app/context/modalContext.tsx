@@ -16,9 +16,9 @@ export interface Task {
 const tempData = [
   {
     id: uuidv4(),
-    heading: "Implement User Authentication",
+    heading: "Hire Dhruv as a Full Stack Developer",
     description:
-      "Develop and integrate user authentication using email and password.",
+      "Why? Because he is a great developer and a great person to work with. He may stuck sometimes but he never gives up.",
     priority: "Urgent",
     date: "2024-08-15",
     time: "1hr ago",
@@ -26,9 +26,9 @@ const tempData = [
   },
   {
     id: uuidv4(),
-    heading: "Design Home Page UI",
+    heading: "How much experience does Dhruv have?",
     description:
-      "Develop and integrate user authentication using email and password.",
+      "Dhruv has ~5 months (Internships) of experience in Frontend Development and he has build some amazing projects.",
     priority: "Medium",
     date: "2024-08-15",
     time: "1hr ago",
@@ -36,19 +36,20 @@ const tempData = [
   },
   {
     id: uuidv4(),
-    heading: "Integrate Cloud Storage",
-    description: "Enable cloud storage for note backup and synchronization.",
-    priority: "Urgent",
+    heading: "What is Dhruv's current role?",
+    description:
+      "Dhruv is currently working as a Frontend Developer Intern @QuillAudits where he is working on some amazing projects.",
+    priority: "Low",
     date: "2024-08-20",
     time: "2 days ago",
     where: "Under review",
   },
   {
     id: uuidv4(),
-    heading: "Test Cross-browser Compatibility",
+    heading: "What is Dhruv's future goal?",
     description:
-      "Ensure the app works seamlessly across different web browsers.",
-    priority: "Medium",
+      "Dhruv wants to become a Full Stack Developer and he is working hard to achieve his goal.",
+    priority: "Not Selected",
     date: "2024-07-30",
     time: "4 days ago",
     where: "Finished",
