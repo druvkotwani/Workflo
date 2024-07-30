@@ -28,8 +28,14 @@ const Draggable = dynamic(
 );
 
 const Workspace = () => {
-  const { setShowModal, setStatus, data, setSelectedTask } =
-    useContext(ModalContext);
+  const {
+    setShowModal,
+    setStatus,
+    data,
+    setSelectedTask,
+    selectedTask,
+    token,
+  } = useContext(ModalContext);
   const [columns, setColumns] = useState<ColumnsState>({
     "To do": [],
     "In progress": [],
@@ -46,7 +52,29 @@ const Workspace = () => {
     });
   }, [data]);
 
-  const onDragEnd = (result: any) => {
+  const updateTaskStatus = async (task: ListProps, newStatus: string) => {
+    try {
+      const response = await fetch(`http://localhost:8000/tasks/${task.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ task: { ...task, where: newStatus } }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update task status");
+      }
+
+      const result = await response.json();
+      console.log("Task status updated:", result);
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
+  const onDragEnd = async (result: any) => {
     const { source, destination } = result;
     if (!destination) return;
 
@@ -63,6 +91,9 @@ const Workspace = () => {
       [sourceColumn]: sourceItems,
       [destColumn]: destItems,
     });
+
+    // Update task status on the backend
+    await updateTaskStatus(removed, destColumn);
   };
   return (
     <div
