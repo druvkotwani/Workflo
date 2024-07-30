@@ -35,7 +35,7 @@ const Sidebar = () => {
   const { setShowModal, setStatus, username, setUsername, setToastMessage } =
     useContext(ModalContext);
   return (
-    <div className="fixed top-0 left-0 w-[285px] h-screen  py-6 px-4 bg-white lg:w-[285px] flex flex-col gap-4 border-r border-r-[#DEDEDE]">
+    <div className="fixed top-0 left-0 md:w-[285px] w-[150px] h-screen  py-6 px-4 bg-white lg:w-[285px] flex flex-col gap-4 border-r border-r-[#DEDEDE]">
       {/* Profile + Additional Settings + Logout */}
       <div className="flex flex-col  gap-2">
         {/* Profile section */}
@@ -54,7 +54,7 @@ const Sidebar = () => {
         </div>
 
         {/* Additional section */}
-        <div className="flex justify-between items-center">
+        <div className="flex md:justify-between md:items-center md:flex-row flex-col gap-y-2 items-start justify-start">
           <div className="flex gap-5">
             {["notification.svg", "status.svg", "right.svg"].map(
               (item: any, index: number) => (
@@ -85,12 +85,12 @@ const Sidebar = () => {
 
       {/* Boards */}
       <div className="w-full h-full">
-        <div className="mb-4 flex flex-col gap-2 justify-center items-start w-full">
+        <div className="mb-4 flex flex-col gap-2 justify-center items-start md:w-full">
           {data.map((item: any, index: number) => (
             <div
               onClick={() => setSelectedTab(item.name)}
               key={index}
-              className={`flex justify-start rounded w-full items-center gap-[14px] ${
+              className={`flex justify-start rounded md:w-full items-center gap-[14px] ${
                 selectedTab === item.name
                   ? "bg-[#F4F4F4] border border-[#DDDDDD]"
                   : "border border-transparent"
@@ -102,7 +102,7 @@ const Sidebar = () => {
                 width={24}
                 height={24}
               />
-              <p className="font-inter text-[20px] text-[#797979]">
+              <p className="font-inter hidden md:flex text-[20px] text-[#797979]">
                 {item.name}
               </p>
             </div>
