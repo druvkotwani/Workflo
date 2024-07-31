@@ -19,8 +19,6 @@ https://github.com/user-attachments/assets/ee4d9b06-2dea-446e-a1a4-0253b921ef64
     <img src="https://skillicons.dev/icons?i=tailwindcss,typescript,react,next,vercel,mongodb,expressjs,nodejs" />
   </a>
 
-## 👩🏽‍💻 Demo
-Check out the website: [Website](https://crework-assignment-dhruvkotwani.vercel.app/)
 
 
 ## 🚀 Running Frontend
