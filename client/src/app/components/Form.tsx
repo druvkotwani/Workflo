@@ -29,10 +29,12 @@ const Form = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const pathname = usePathname();
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const handleEmailChange = async (event: React.FormEvent) => {
+    setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     const name = formData.get("name");
@@ -76,6 +78,7 @@ const Form = () => {
     } catch (error) {
       toast("⚠️ Error: " + error);
     }
+    setLoading(false);
   };
 
   return (
@@ -140,16 +143,26 @@ const Form = () => {
                   validCredentials(email, password, name, pathname || "") ===
                   false
                 }
-                className=" mt-[22px] shadow-md bg-gradient-to-t from-[#4B36CC] to-[#9C93D4] p-[1.5px] rounded-lg"
+                className="hover:scale-[1.02] transition-all transform duration-300 mt-[22px] shadow-md bg-gradient-to-t from-[#4B36CC] to-[#9C93D4] p-[1.5px] rounded-lg"
               >
                 <div
-                  className={`py-3 flex items-center justify-center w-full text-white rounded-lg text-lg p-2 ${
+                  className={`py-3  gap-2 flex items-center justify-center w-full text-white rounded-lg text-lg p-2 ${
                     validCredentials(email, password, name, pathname || "") ===
-                    true
+                      true && !loading
                       ? "bg-gradient-to-t from-[#4C38C2] to-[#2F2188] "
                       : " "
                   }   `}
                 >
+                  {loading ? (
+                    <Image
+                      src="/assets/loading.svg"
+                      alt="loader"
+                      width={24}
+                      height={24}
+                    />
+                  ) : (
+                    <></>
+                  )}
                   {pathname === "/signup" ? "Sign Up" : "Login"}
                 </div>
               </button>
