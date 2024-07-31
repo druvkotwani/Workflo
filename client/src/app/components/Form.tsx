@@ -104,7 +104,7 @@ const Form = () => {
                     type="text"
                     name="name"
                     placeholder="Full name"
-                    className=" py-4 px-3 font-inter text-[#606060] text-[20px] bg-[#EBEBEB] rounded-lg  focus:outline-none"
+                    className=" py-4 px-3 font-inter text-[#606060] text-[20px] bg-[#EBEBEB] rounded-lg  focus:outline-[#ddd] focus:outline-none"
                   />
                 )}
                 <input
@@ -113,7 +113,7 @@ const Form = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   name="email"
                   placeholder="Your Email"
-                  className={`py-4 px-3 text-[#606060] font-inter text-[20px] bg-[#EBEBEB] rounded-lg focus:outline-none `}
+                  className={`py-4 focus:outline-[#ddd] focus:outline-none px-3 text-[#606060] font-inter text-[20px] bg-[#EBEBEB] rounded-lg  `}
                 />
 
                 <div className="relative w-full">
@@ -123,7 +123,7 @@ const Form = () => {
                     type={passwordVisible ? "text" : "password"}
                     placeholder="Password"
                     name="password"
-                    className=" py-4 px-3 font-inter text-[#606060] w-full text-[20px] bg-[#EBEBEB] rounded-lg  focus:outline-none"
+                    className=" py-4 px-3 font-inter text-[#606060] w-full text-[20px] bg-[#EBEBEB] rounded-lg  focus:outline-[#ddd] focus:outline-none"
                   />
                   {/* Toggle Visibility for Password */}
                   <Image
@@ -144,7 +144,7 @@ const Form = () => {
                   validCredentials(email, password, name, pathname || "") ===
                   false
                 }
-                className="hover:scale-[1.02] transition-all transform duration-300 mt-[22px] shadow-md bg-gradient-to-t from-[#4B36CC] to-[#9C93D4] p-[1.5px] rounded-lg"
+                className="hover:scale-[1.02]  ease-in-out transition-all transform duration-300 mt-[22px] shadow-md bg-gradient-to-t from-[#4B36CC] to-[#9C93D4] p-[1.5px] rounded-lg"
               >
                 <div
                   className={`py-3  gap-2 flex items-center justify-center w-full text-white rounded-lg text-lg p-2 ${
@@ -174,7 +174,10 @@ const Form = () => {
           {pathname === "/signin" && (
             <p className="text-[#606060] font-inter text-[20px] flex items-center justify-center w-full">
               Don’t have an account? Create a&nbsp;
-              <Link href="/signup" className="text-[#0054A1] cursor-pointer">
+              <Link
+                href="/signup"
+                className="text-[#0054A1] cursor-pointer hover:text-[#4583be]"
+              >
                 new account.
               </Link>
             </p>
@@ -184,7 +187,10 @@ const Form = () => {
           {pathname === "/signup" && (
             <p className="text-[#606060] font-inter text-[20px] flex items-center justify-center w-full">
               Already have an account?&nbsp;
-              <Link href="/signin" className="text-[#0054A1] cursor-pointer">
+              <Link
+                href="/signin"
+                className="text-[#0054A1] cursor-pointer hover:text-[#4583be]"
+              >
                 Log in.
               </Link>
             </p>
