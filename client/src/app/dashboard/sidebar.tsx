@@ -49,7 +49,7 @@ const Sidebar = () => {
           />
 
           <p className="ml-2 font-inter font-medium text-[20px] text-[#080808]">
-            {username}
+            {username || localStorage.getItem("username")}
           </p>
         </div>
 
@@ -74,6 +74,7 @@ const Sidebar = () => {
             onClick={() => {
               setToastMessage("😶‍🌫️ Logged out successfully");
               setUsername("");
+              localStorage.removeItem("username");
               localStorage.removeItem("token");
             }}
             className="bg-[#F4F4F4] text-[#797979] hover:border hover:border-[#ddd] border border-transparent text-base font-inter rounded flex items-center justify-start p-2"

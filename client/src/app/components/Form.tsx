@@ -68,6 +68,7 @@ const Form = () => {
           setToastMessage("✈️ Sign-in successful");
           setToken(data.token);
           localStorage.setItem("token", data.token);
+          localStorage.setItem("username", data.name);
           setUsername(data.name);
           router.push("/dashboard");
         }

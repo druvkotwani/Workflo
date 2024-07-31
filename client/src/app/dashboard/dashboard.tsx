@@ -64,7 +64,7 @@ const Dashboard = () => {
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between w-full">
           <h2 className="font-barlow font-semibold text-3xl md:text-5xl text-[#080808]">
-            {goodMorning()}, {username}!
+            {goodMorning()}, {username || localStorage.getItem("username")}!
           </h2>
 
           <div className="font-inter text-[#080808] flex items-center gap-2 relative">
