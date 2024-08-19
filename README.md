@@ -1,6 +1,4 @@
-# Frontend Assignment for Crework
-
-This project is the assignment given to us Crework
+# WorkFlo task Manganement app
 
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/7383649f-7a40-462b-a40d-5ccf9a7e32e1)
